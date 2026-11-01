@@ -1,0 +1,10 @@
+import './sync-stations.mjs';
+import './build-artwork.mjs';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+const html=readFileSync('src/index.html','utf8');
+let server=readFileSync('src/server.js','utf8');
+server=server.replace('"__LUMA_HTML__"',()=>JSON.stringify(html));
+server=server.replace('"__LUMA_ARTWORK_PNG__"',()=>JSON.stringify(readFileSync('src/artwork.png').toString('base64')));
+mkdirSync('dist/server',{recursive:true});
+writeFileSync('dist/server/index.js',server);
+console.log('LUMA Radio built');

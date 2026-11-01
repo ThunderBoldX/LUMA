@@ -1,0 +1,11 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const catalog=JSON.parse(readFileSync('src/stations.json','utf8'));
+if(new Set(catalog.map(s=>s.id)).size!==catalog.length)throw Error('Duplicate station ID');
+for(const s of catalog)if(!s.name||!['UA','DK','DE','US','INT'].includes(s.country)||!s.streams?.length||!s.streams.every(u=>new URL(u).protocol==='https:'))throw Error('Invalid station: '+s.id);
+const publicCatalog=catalog.map(({streams,...metadata})=>metadata);
+let html=readFileSync('src/index.html','utf8');
+html=html.replace(/^const defaults=.*;$/m,()=> 'const defaults='+JSON.stringify(publicCatalog)+';');
+writeFileSync('src/index.html',html);
+let server=readFileSync('src/server.js','utf8');
+server=server.replace(/^const streams=.*;$/m,()=> 'const streams='+JSON.stringify(Object.fromEntries(catalog.map(s=>[s.id,s.streams])))+';');
+writeFileSync('src/server.js',server);

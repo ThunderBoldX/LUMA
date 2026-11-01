@@ -1,0 +1,54 @@
+import './sync-stations.mjs';
+import './build-artwork.mjs';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+const html=readFileSync('src/index.html','utf8');
+const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];new vm.Script(script);
+const source=readFileSync('src/server.js','utf8').replace('"__LUMA_HTML__"',()=>JSON.stringify(html)).replace('"__LUMA_ARTWORK_PNG__"',()=>JSON.stringify(readFileSync('src/artwork.png').toString('base64')));
+const {default:worker}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+const realFetch=globalThis.fetch;let calls=[];
+const request=(path,options)=>worker.fetch(new Request('https://luma.test'+path,options),{});
+try{
+ assert.equal((await request('/')).status,200);assert.match(await(await request('/')).text(),/<title>LUMA<\/title>/);
+ assert.equal((await request('/missing')).status,404);const artwork=await request('/artwork.png');assert.equal(artwork.headers.get('content-type'),'image/png');assert.equal(new DataView(await artwork.arrayBuffer()).getUint32(0),0x89504e47);
+ assert.equal((await request('/api/stream?station=https://evil.test')).status,404);
+ globalThis.fetch=async(url,options)=>{calls.push([url,options]);return new Response(new Uint8Array([1,2,3]),{headers:{'Content-Type':'audio/mpeg'}});};
+ let r=await request('/api/stream?station=kiss');assert.equal(r.status,200);assert.equal(r.headers.get('content-type'),'audio/mpeg');assert.deepEqual([...new Uint8Array(await r.arrayBuffer())],[1,2,3]);assert.equal(calls.at(-1)[0],'https://online.kissfm.ua/KissFM_HD');
+ const catalog=JSON.parse(readFileSync('src/stations.json','utf8'));assert.equal(catalog.length,19);assert.equal(catalog.filter(s=>s.country==='DK').length,3);
+ for(const station of catalog){calls=[];r=await request('/api/stream?station='+station.id);assert.equal(r.status,200);await r.body.cancel();assert.equal(calls[0][0],station.streams[0]);}
+ let fallbackCalls=[];globalThis.fetch=async(url)=>{fallbackCalls.push(url);return url.endsWith('lux_hd')?new Response('Unavailable',{status:503}):new Response(new Uint8Array([1]),{headers:{'Content-Type':'audio/aac'}});};r=await request('/api/stream?station=luxfm');assert.equal(r.status,200);assert.equal(fallbackCalls.length,2);assert.equal(r.headers.get('content-type'),'audio/aac');await r.body.cancel();
+ globalThis.fetch=async()=>new Response('<html>not audio</html>',{headers:{'Content-Type':'text/html'}});assert.equal((await request('/api/stream?station=nova')).status,502);
+
+ const metadata="StreamTitle='Artist - Song';";const len=Math.ceil(metadata.length/16);const packet=new Uint8Array(5+len*16);packet[4]=len;packet.set(new TextEncoder().encode(metadata),5);
+ globalThis.fetch=async()=>new Response(packet,{headers:{'icy-metaint':'4','Content-Type':'audio/mpeg'}});
+ r=await request('/api/now?station=deep');let data=await r.json();assert.equal(data.track.artist,'Artist');assert.equal(data.track.title,'Song');
+ globalThis.fetch=async(url)=>url.includes('online.kissfm.ua')?new Response('audio',{headers:{'Content-Type':'audio/mpeg'}}):new Response('<a href="/else">Else</a><a href="/track">🔊 Artist &amp; Friend — Current Song</a>');
+ data=await(await request('/api/now?station=kiss')).json();assert.equal(data.track.artist,'Artist & Friend');assert.equal(data.track.title,'Current Song');
+ globalThis.fetch=async(url)=>url.includes('online.kissfm.ua')?new Response('audio',{headers:{'Content-Type':'audio/mpeg'}}):new Response('<a href="/track">🔊 KISS.CLUB.MIX. The Best Dance Radio — KISSFM</a>');
+ data=await(await request('/api/now?station=kiss')).json();assert.equal(data.track,null);
+ assert.equal((await request('/api/recognize',{method:'POST',headers:{Origin:'https://evil.test'},body:new FormData()})).status,403);
+ assert.equal((await request('/api/recognize',{method:'POST',headers:{Origin:'https://luma.test'},body:new FormData()})).status,428);
+ let form=new FormData();form.set('token','dummy');form.set('file',new Blob([new Uint8Array(999)]),'test.webm');assert.equal((await request('/api/recognize',{method:'POST',headers:{Origin:'https://luma.test'},body:form})).status,400);
+ let providerCalls=0;globalThis.fetch=async(url,options)=>{providerCalls++;assert.equal(url,'https://api.audd.io/');assert.equal(options.body.get('api_token'),'dummy');return Response.json({status:'success',result:{artist:'Recognized Artist',title:'Recognized Song'}});};
+ form=new FormData();form.set('token','dummy');form.set('file',new Blob([new Uint8Array(2000)]),'test.webm');data=await(await request('/api/recognize',{method:'POST',headers:{Origin:'https://luma.test'},body:form})).json();assert.equal(data.track.title,'Recognized Song');assert.equal(providerCalls,1);
+ const manifest=await(await request('/manifest.webmanifest')).json();assert.equal(manifest.display,'standalone');assert.equal(manifest.lang,'uk');
+ const elements=new Map();const element=()=>({value:'',textContent:'',innerHTML:'',dataset:{},style:{},classList:{add(){},remove(){},toggle(){},contains(){return false;}},setAttribute(){},getBoundingClientRect(){return{width:0,height:0}},addEventListener(){},querySelector(){return null},focus(){},click(){}});
+ const document={querySelector:s=>{if(!elements.has(s))elements.set(s,element());return elements.get(s)},querySelectorAll:()=>[],addEventListener(){},body:element()};
+ const storage=new Map();const context=vm.createContext({document,window:{scrollTo(){},addEventListener(){}},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},navigator:{},crypto:globalThis.crypto,URL,Blob,TextEncoder,Date,console,setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,requestAnimationFrame(){},AbortController,AbortSignal,fetch:realFetch});
+ vm.runInContext(script,context);
+ assert.equal(vm.runInContext('defaults.length',context),19);
+ vm.runInContext("regionFilter='DK';renderStations();",context);assert.equal(vm.runInContext('filteredStations().length',context),3);assert.match(elements.get('#stations').innerHTML,/The Voice/);assert.doesNotMatch(elements.get('#stations').innerHTML,/KISS/);
+ vm.runInContext("regionFilter='UA';renderStations();",context);assert.equal(vm.runInContext('filteredStations().length',context),11);
+ vm.runInContext("regionFilter='road';renderStations();",context);assert.equal(vm.runInContext('filteredStations().length',context),3);
+ vm.runInContext("regionFilter='trap';renderStations();",context);assert.equal(vm.runInContext('filteredStations().length',context),1);
+ vm.runInContext("regionFilter='trance';renderStations();",context);assert.equal(vm.runInContext('filteredStations().length',context),1);
+ vm.runInContext("regionFilter='bass';renderStations();",context);assert.equal(vm.runInContext('filteredStations().length',context),4);
+ vm.runInContext("regionFilter='all';current=stations.find(s=>s.id==='nova');updateStation();",context);assert.match(elements.get('#heroName').innerHTML,/NOVA/);assert.doesNotMatch(elements.get('#heroName').innerHTML,/KISS/);
+ vm.runInContext("current=stations.find(s=>s.id==='voice');updateStation();",context);
+ vm.runInContext("current=stations[0];updateStation();setPreset('beast');",context);assert.equal(vm.runInContext('eq.sub',context),12);assert.equal(vm.runInContext('headroom()',context),30);assert.equal(vm.runInContext('Math.pow(10,(-headroom())/20)<0.04',context),true);
+ vm.runInContext("setPreset('flat');",context);assert.equal(vm.runInContext('headroom()',context),0);
+ vm.runInContext("acceptTrack({artist:'Artist',title:'Track',source:'radio'});saveCurrent();",context);assert.equal(vm.runInContext('saved.length',context),1);vm.runInContext("acceptTrack({artist:'Artist',title:'Track',source:'radio'});",context);assert.equal(vm.runInContext('history.length',context),1);vm.runInContext('saveCurrent()',context);assert.equal(vm.runInContext('saved.length',context),0);
+ assert.equal(vm.runInContext("safeStream('http://unsafe.test')",context),false);assert.equal(vm.runInContext("safeStream('https://user:pass@test.com')",context),false);assert.equal(vm.runInContext("safeStream('https://radio.test/live.mp3')",context),true);
+ console.log('PASS: routes, stream relay, ICY metadata, station metadata fallback, recognition validation, AudD response, client startup, EQ presets/headroom, song saving, deduplication and URL validation. Live network/audio and visual QA require a browser.');
+}finally{globalThis.fetch=realFetch;}
