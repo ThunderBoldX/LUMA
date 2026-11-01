@@ -1,0 +1,20 @@
+{
+  "name": "luma-radio",
+  "version": "1.2.1",
+  "private": false,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev-radio.mjs",
+    "build": "node scripts/build-radio.mjs",
+    "test": "node scripts/test-radio.mjs && node scripts/test-presence.mjs",
+    "release:windows": "node scripts/build-release.mjs",
+    "check:docs": "node scripts/check-docs.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "type": "module",
+  "license": "MIT",
+  "description": "Desktop radio player with a 10-band equalizer, track collection, Discord Rich Presence and OBS overlay."
+}
