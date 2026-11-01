@@ -22,11 +22,15 @@ For people who listen to radio at their computer, want to adjust bass for their 
 - Optional **Discord Rich Presence** through local IPC. Requires your own Application ID, uploaded artwork and the desktop Discord client.
 - Transparent **OBS overlay**, artwork and metadata for compatible media panels, media keys and a sleep timer.
 
-| Equalizer | Station catalog |
-| --- | --- |
-| ![BEAST MODE equalizer](docs/images/equalizer.jpg) | ![Actual station catalog](docs/images/catalog.jpg) |
+### Equalizer
 
-Screenshots show the actual Windows interface while paused. They do not prove that every stream or Discord is working. [demo-library.json](docs/demo-library.json) provides clearly marked fictional collection entries for your own demonstrations; it contains no credentials.
+![BEAST MODE equalizer](docs/images/equalizer.jpg)
+
+### Station catalog
+
+![Actual station catalog](docs/images/catalog.jpg)
+
+Screenshots show the actual LUMA interface in a clean browser profile on Windows, with playback paused. Click an image to open its original size. They do not prove that every stream or Discord is working. [demo-library.json](docs/demo-library.json) provides clearly marked fictional collection entries for your own demonstrations; it contains no credentials.
 
 ## Requirements
 
