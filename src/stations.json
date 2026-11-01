@@ -1,0 +1,287 @@
+[
+  {
+    "id": "kiss",
+    "name": "KISS FM",
+    "brand": "KISS FM",
+    "label": "DANCE RADIO",
+    "genre": "Electronic · Dance · House",
+    "location": "Київ, Україна",
+    "country": "UA",
+    "tag": "THE BEST DANCE RADIO",
+    "website": "https://www.kissfm.ua/",
+    "streams": [
+      "https://online.kissfm.ua/KissFM_HD",
+      "https://online.kissfm.ua/KissFM"
+    ]
+  },
+  {
+    "id": "ukr",
+    "name": "KISS FM Ukrainian",
+    "brand": "KISS FM",
+    "label": "UKRAINIAN",
+    "genre": "Українська · Dance",
+    "location": "Україна",
+    "country": "UA",
+    "streams": [
+      "https://online.kissfm.ua/KissFM_Ukr"
+    ]
+  },
+  {
+    "id": "deep",
+    "name": "KISS FM Deep",
+    "brand": "KISS FM",
+    "label": "DEEP",
+    "genre": "Deep House · Chill",
+    "location": "Україна",
+    "country": "UA",
+    "streams": [
+      "https://online.kissfm.ua/KissFM_Deep"
+    ]
+  },
+  {
+    "id": "digital",
+    "name": "KISS FM Digital",
+    "brand": "KISS FM",
+    "label": "DIGITAL",
+    "genre": "Electronic · Digital",
+    "location": "Україна",
+    "country": "UA",
+    "streams": [
+      "https://online.kissfm.ua/KissFM_Digital"
+    ]
+  },
+  {
+    "id": "hitfm",
+    "name": "Хіт FM",
+    "brand": "Хіт FM",
+    "label": "ТІЛЬКИ ХІТИ",
+    "genre": "Поп · Українські та світові хіти",
+    "location": "Україна",
+    "country": "UA",
+    "tag": "ТІЛЬКИ ХІТИ!",
+    "website": "https://www.hitfm.ua/",
+    "streams": [
+      "https://online.hitfm.ua/HitFM_HD",
+      "https://online.hitfm.ua/HitFM"
+    ]
+  },
+  {
+    "id": "roks",
+    "name": "Radio ROKS",
+    "brand": "ROKS",
+    "label": "RADIO ROKS",
+    "genre": "Рок · Класичний рок",
+    "location": "Україна",
+    "country": "UA",
+    "tag": "РОК. ТІЛЬКИ РОК!",
+    "website": "https://www.radioroks.ua/",
+    "streams": [
+      "https://online.radioroks.ua/RadioROKS_HD",
+      "https://online.radioroks.ua/RadioROKS"
+    ]
+  },
+  {
+    "id": "luxfm",
+    "name": "Люкс ФМ",
+    "brand": "ЛЮКС",
+    "label": "ЛЮКС ФМ",
+    "genre": "Поп · Хіти · Розваги",
+    "location": "Україна",
+    "country": "UA",
+    "tag": "ВСЕ БУДЕ ЛЮКС!",
+    "website": "https://lux.fm/radio/luxfm",
+    "streams": [
+      "https://icecast.luxnet.ua/lux_hd",
+      "https://icecast.luxnet.ua/lux"
+    ]
+  },
+  {
+    "id": "nrj",
+    "name": "Radio NRJ",
+    "brand": "NRJ",
+    "label": "ENERGY",
+    "genre": "Поп · Dance · Сучасні хіти",
+    "location": "Україна",
+    "country": "UA",
+    "website": "https://nrj.ua/",
+    "streams": [
+      "https://cast.mediaonline.net.ua/nrj320",
+      "https://cast.mediaonline.net.ua/nrj"
+    ]
+  },
+  {
+    "id": "voice",
+    "name": "The Voice",
+    "brand": "The Voice",
+    "label": "DANMARK",
+    "genre": "Поп · Dance · Хіти",
+    "location": "Данія",
+    "country": "DK",
+    "website": "https://rayo.dk/thevoice/",
+    "streams": [
+      "https://live-bauerdk.sharp-stream.com/thevoice_dk_mp3"
+    ]
+  },
+  {
+    "id": "nova",
+    "name": "NOVA",
+    "brand": "NOVA",
+    "label": "DANMARK",
+    "genre": "Поп · Сучасні хіти",
+    "location": "Данія",
+    "country": "DK",
+    "website": "https://rayo.dk/nova/",
+    "streams": [
+      "https://live-bauerdk.sharp-stream.com/nova_dk_mp3"
+    ]
+  },
+  {
+    "id": "soft",
+    "name": "Radio Soft",
+    "brand": "SOFT",
+    "label": "RADIO SOFT",
+    "genre": "М’який поп · Спокійна музика",
+    "location": "Данія",
+    "country": "DK",
+    "website": "https://rayo.dk/radio-soft/",
+    "streams": [
+      "https://live-bauerdk.sharp-stream.com/radiosoft_dk_mp3"
+    ]
+  },
+  {
+    "id": "avtoradio",
+    "name": "Авторадіо Україна",
+    "brand": "АВТО",
+    "label": "У ДОРОГУ",
+    "genre": "Хіти · Музика для поїздок",
+    "location": "Україна",
+    "country": "UA",
+    "tags": [
+      "road"
+    ],
+    "website": "https://www.avtoradio.ua/",
+    "streams": [
+      "https://cast.mediaonline.net.ua/avtoradio320",
+      "https://cast.mediaonline.net.ua/avtoradio"
+    ]
+  },
+  {
+    "id": "perec",
+    "name": "Перець FM",
+    "brand": "ПЕРЕЦЬ",
+    "label": "У ДОРОГУ",
+    "genre": "Українські хіти · Гумор",
+    "location": "Україна",
+    "country": "UA",
+    "tags": [
+      "road"
+    ],
+    "website": "https://perec.fm/",
+    "streams": [
+      "https://radio.perec.fm/radio-stilnoe"
+    ]
+  },
+  {
+    "id": "maximum",
+    "name": "Радіо Максимум",
+    "brand": "MAXIMUM",
+    "label": "У ДОРОГУ",
+    "genre": "Поп · Рок · Хіти для дороги",
+    "location": "Україна",
+    "country": "UA",
+    "tags": [
+      "road"
+    ],
+    "website": "https://maximum.fm/",
+    "streams": [
+      "https://icecast.luxnet.ua/maximum_hd",
+      "https://icecast.luxnet.ua/maximum"
+    ]
+  },
+  {
+    "id": "trap",
+    "name": "Trap · laut.fm",
+    "brand": "TRAP",
+    "label": "808 / TRAP",
+    "genre": "Trap · Hip-Hop · 808 Bass",
+    "location": "laut.fm · Міжнародне",
+    "country": "INT",
+    "tags": [
+      "trap",
+      "bass"
+    ],
+    "website": "https://laut.fm/trap",
+    "streams": [
+      "https://stream.laut.fm/trap"
+    ]
+  },
+  {
+    "id": "trancebase",
+    "name": "TranceBase.FM",
+    "brand": "TRANCE",
+    "label": "TRANCEBASE.FM",
+    "genre": "Uplifting · Progressive · Hard Trance",
+    "location": "Німеччина",
+    "country": "DE",
+    "tags": [
+      "trance"
+    ],
+    "website": "https://www.trancebase.fm/",
+    "streams": [
+      "https://listen.trancebase.fm/tunein-mp3",
+      "https://listen.trancebase.fm/tunein-aac-hd"
+    ]
+  },
+  {
+    "id": "hardbase",
+    "name": "HardBase.FM",
+    "brand": "HARD",
+    "label": "HARDBASE.FM",
+    "genre": "Hardstyle · Raw · Hardcore",
+    "location": "Німеччина",
+    "country": "DE",
+    "tags": [
+      "bass"
+    ],
+    "tag": "ВАЖКІ КІКИ. МАКСИМУМ ДРАЙВУ.",
+    "website": "https://www.hardbase.fm/",
+    "streams": [
+      "https://listen.hardbase.fm/tunein-mp3",
+      "https://listen.hardbase.fm/tunein-aac-hd"
+    ]
+  },
+  {
+    "id": "technobase",
+    "name": "TechnoBase.FM",
+    "brand": "TECHNO",
+    "label": "TECHNOBASE.FM",
+    "genre": "HandsUp · Dance · Hypertechno",
+    "location": "Німеччина",
+    "country": "DE",
+    "tags": [
+      "bass"
+    ],
+    "website": "https://www.technobase.fm/",
+    "streams": [
+      "https://listen.technobase.fm/tunein-mp3",
+      "https://listen.technobase.fm/tunein-aac-hd"
+    ]
+  },
+  {
+    "id": "dubstep",
+    "name": "SomaFM · Dub Step Beyond",
+    "brand": "DUBSTEP",
+    "label": "SOMAFM",
+    "genre": "Dubstep · Bass · Низькі частоти",
+    "location": "США",
+    "country": "US",
+    "tags": [
+      "bass"
+    ],
+    "website": "https://somafm.com/dubstep/",
+    "streams": [
+      "https://ice5.somafm.com/dubstep-256-mp3",
+      "https://ice6.somafm.com/dubstep-256-mp3"
+    ]
+  }
+]
